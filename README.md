@@ -1,4 +1,4 @@
-##LinuxBlog
+## LinuxBlog
 
 LinuxBlog is an experimental blog written in Flask and Vue.js, where anyone can share and comment
 posts about Linux and its Distros
