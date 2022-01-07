@@ -16,7 +16,7 @@ def last_posts():
     
     response = {}
     
-    if not p:
+    if not posts:
         response = {
             'Empty': True
         }
@@ -85,7 +85,7 @@ def post_category():
     posts = Post.query.filter_by(category = cat).all()
     response = {}
 
-    if not p:
+    if not posts:
         response = {
             'Empty': True
         }
@@ -97,7 +97,7 @@ def post_category():
             'user': p.user,
             'category': p.category,
             'title': p.title,
-            'text': t.text
+            'text': p.text
         }
 
         response[p.id] = r 
