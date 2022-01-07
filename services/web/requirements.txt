@@ -1,0 +1,6 @@
+Flask==2.0.2
+Flask-SQLAlchemy 
+psycopg2-binary
+flask-login 
+Flask-Cors
+Flask-Session
