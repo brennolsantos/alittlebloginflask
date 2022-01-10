@@ -104,7 +104,7 @@ def post_category():
 
     return make_response(jsonify(response), 200)
 
-@blog.route('/profile', methods=['GET'])
+@blog.route('/profile', methods=['POST'])
 def profile():
     id = request.form['id']
 
@@ -173,7 +173,7 @@ def view_post():
 def make_comment():
     post_id = request.form['post']
 
-    post = Post.query.get(int(post_id))
+    post = Post.query.get(post_id)
 
     if not post:
         res = {
@@ -185,7 +185,7 @@ def make_comment():
     user = request.form['user']
     text = request.form.get('text')
 
-    com = Comment(author=user, post = post, text = text)
+    com = Comment(author=user, post = post.id, text = text)
     db.session.add(com)
     db.session.commit()
 
@@ -200,7 +200,7 @@ def make_comment():
 
 
 
-@blog.route('/getcomment', methods=['GET'])
+@blog.route('/getcomment', methods=['POST'])
 @login_required
 def get_comment():
     id = request.form['id']
@@ -226,7 +226,7 @@ def get_comment():
 
 
 
-@blog.route('/postcomments', methods='GET')
+@blog.route('/postcomments', methods=['POST'])
 @login_required
 def post_comments():
     id = request.form['id']
