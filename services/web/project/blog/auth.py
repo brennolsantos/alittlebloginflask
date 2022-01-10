@@ -28,7 +28,7 @@ def login():
     }
 
     login_user(user)
-    return make_response(jsonify(res()),200) 
+    return make_response(jsonify(res),200) 
    
 
 
