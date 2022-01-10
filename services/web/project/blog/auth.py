@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, session, make_response
 from project.app import db 
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
-from flask_login import login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user, current_user
 
 
 
@@ -28,7 +28,7 @@ def login():
     }
 
     login_user(user)
-    return make_response(jsonify(res(),200) 
+    return make_response(jsonify(res()),200) 
    
 
 
@@ -91,3 +91,13 @@ def get_user():
     }
 
     return make_response(jsonify(res), 200)
+
+
+
+@auth.route('/getuserid')
+def cur_user_id():
+    res = {
+        'id': current_user.id
+    }
+
+    return make_response(res, 200)
