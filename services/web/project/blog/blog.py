@@ -104,9 +104,25 @@ def post_category():
 
     return make_response(jsonify(response), 200)
 
-@blog.route('/profile')
+@blog.route('/profile', methods=['GET'])
 def profile():
-    return 'Profile'
+    id = request.form['id']
+
+    user = User.query.get(id)
+
+    if not user:
+        res = {
+            'status': 'User does not exist'
+        }
+
+        return make_response(jsonify(res), 400)
+
+    res = {
+        'name': user.name,
+        'email': user.email
+    }
+
+    return make_response(jsonify(res), 200)
 
 
 @blog.route('/post', methods=['GET', 'POST'])
@@ -152,7 +168,83 @@ def view_post():
 
 
 
-@blog.route('/comment', methods=['GET','POST'])
+@blog.route('/comment', methods=['POST'])
 @login_required
-def comment():
-    return current_user.name
+def make_comment():
+    post_id = request.form['post']
+
+    post = Post.query.get(int(post_id))
+
+    if not post:
+        res = {
+            'status': 'Post doesn\'t exist'
+        }
+
+        return make_response(jsonify(res), 400)
+
+    user = request.form['user']
+    text = request.form.get('text')
+
+    com = Comment(author=user, post = post, text = text)
+    db.session.add(com)
+    db.session.commit()
+
+    res = {
+        'id': com.id,
+        'author': com.author,
+        'post': com.post,
+        'text': com.text
+    }
+
+    return make_response(jsonify(res), 201)
+
+
+
+@blog.route('/getcomment', methods=['GET'])
+@login_required
+def get_comment():
+    id = request.form['id']
+
+    com = Comment.query.get(id)
+    if not com:
+        res = {
+            'status': 'Comment does not exist'
+        } 
+
+        return make_response(jsonify(res), 400)
+
+    res = {
+        'id': com.id,
+        'author': com.author,
+        'post': com.post,
+        'text': com.text
+    }
+
+    return make_response(jsonify(res), 200)
+
+
+
+
+
+@blog.route('/postcomments', methods='GET')
+@login_required
+def post_comments():
+    id = request.form['id']
+
+    coms = Comment.query.filter_by(post = id).all()
+
+    res = {}
+
+    for c in coms:
+        res[c.id] = {
+            'author': c.author,
+            'text': c.text
+        }
+
+    return make_response(jsonify(res), 200)
+
+
+    
+
+    
+
